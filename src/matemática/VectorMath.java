@@ -35,11 +35,11 @@ public class VectorMath
 		coordenadas = vec.coordenadas;
 	}
 	
-	public VectorMath suma (VectorMath vec) throws DimException
+	public VectorMath suma (VectorMath vec) throws MathException
 	{
 		if (this.dim != vec.dim)
 		{
-			throw new DimException("las dimensiones no son iguales");
+			throw new MathException("las dimensiones no son iguales");
 		}
 		
 		double[] coords = new double[this.dim];
@@ -51,11 +51,11 @@ public class VectorMath
 		return res;
 	}
 	
-	public VectorMath resta (VectorMath vec) throws DimException
+	public VectorMath resta (VectorMath vec) throws MathException
 	{
 		if (this.dim != vec.dim)
 		{
-			throw new DimException("las dimensiones no son iguales");
+			throw new MathException("las dimensiones no son iguales");
 		}
 		
 		double[] coords = new double[this.dim];
@@ -65,6 +65,16 @@ public class VectorMath
 		
 		VectorMath res = new VectorMath(coords);
 		return res;
+	}
+	
+	public VectorMath producto (double escalar)
+	{
+		double[] coords = this.coordenadas;
+		
+		for (int i = 0; i < coords.length; i++)
+			coords[i] *= escalar;
+		
+		return new VectorMath(coords);
 	}
 	
 	public double producto (VectorMath vec)
@@ -82,10 +92,10 @@ public class VectorMath
 		return 0;
 	}
 	
-	public VectorMath producto (MatrizMath mat) throws DimException
+	public VectorMath producto (MatrizMath mat) throws MathException
 	{
 		if (this.dim != mat.getColumnas())
-			throw new DimException("la dimensión del vector no es igual a la altura de la matriz");
+			throw new MathException("la dimensión del vector no es igual a la altura de la matriz");
 		
 		double[] coords = new double[this.dim];
 			
@@ -94,6 +104,50 @@ public class VectorMath
 			coords[i] = this.producto(mat.getColumna(i));
 		}
 			
+		return new VectorMath(coords);
+	}
+	
+	public double[] getCoordenadas()
+	{
+		return coordenadas;
+	}
+
+	public void setCoordenadas(double[] coordenadas)
+	{
+		this.coordenadas = coordenadas;
+	}
+
+	public int getDim()
+	{
+		return dim;
+	}
+
+	public void setDim(int dim)
+	{
+		this.dim = dim;
+	}
+
+	public double norma ()
+	{
+		double norm = 0;
+		
+		for (int i = 0; i < this.dim; i++)
+			norm += Math.pow(coordenadas[i], 2);
+		
+		return Math.sqrt(norm);
+	}
+	
+	public VectorMath normalizado () throws MathException
+	{
+		double norma = this.norma();
+		if (dim == 0 || norma == 0)
+			throw new MathException("intento de normalizar un vector nulo");
+		
+		double[] coords = new double[this.dim];
+		
+		for(int i = 0; i < this.dim; i++)
+			coords[i] = coordenadas[i] / norma;
+		
 		return new VectorMath(coords);
 	}
 	

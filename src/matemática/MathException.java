@@ -1,8 +1,8 @@
 package matemática;
 
-public class DimException extends Exception 
+public class MathException extends Exception 
 {
-	public DimException (String mensaje)
+	public MathException (String mensaje)
 	{
 		super(mensaje);
 	}
